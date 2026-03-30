@@ -1,29 +1,29 @@
 # MRQ.CryptoBot
 
-Bot de trading automatizado para a Binance Smart Chain (BSC), com interface Windows Forms e arquitetura em camadas.
+Automated trading bot for Binance Smart Chain (BSC) with a Windows Forms UI and a layered architecture.
 
-## Visão Geral
+## Overview
 
-O MRQ.CryptoBot é uma aplicação desktop desenvolvida em **.NET 6 / C#** que automatiza operações de compra e venda de tokens na BSC via **PancakeSwap**. Ele monitora preços em tempo real, executa ordens com base em regras configuráveis e mantém histórico local das operações.
+MRQ.CryptoBot is a desktop app built with **.NET 6 / C#** that automates buying and selling tokens on BSC through **PancakeSwap**. It monitors prices in real time, executes orders based on configurable rules, and keeps a local history of operations.
 
-### Principais funcionalidades
+### Key features
 
-- Compra e venda automatizada de tokens na BSC (PancakeSwap)
-- Monitoramento de preços e liquidez em tempo real
-- Controle de slippage, gas limit e limites de saldo
-- Carteira criptografada localmente (login/logout seguro)
-- Integração com **Moralis** para dados de mercado
-- Integração com **BSCScan** para valor corrente dos tokens
-- Notificações via **Telegram** *(planejado)*
-- Verificação de latência com a blockchain e internet
-- Persistência local com **SQLite** via Entity Framework Core
-- Log de operações executadas em arquivo local
+- Automated buy/sell of BSC tokens (PancakeSwap)
+- Real-time price and liquidity monitoring
+- Control of slippage, gas limit, and balance limits
+- Locally encrypted wallet (secure login/logout)
+- **Moralis** integration for market data
+- **BSCScan** integration for current token values
+- **Telegram** notifications *(planned)*
+- Latency checks against the blockchain and the internet
+- Local persistence with **SQLite** via Entity Framework Core
+- Log of executed operations to a local file
 
 ---
 
-## Arquitetura
+## Architecture
 
-O projeto segue uma arquitetura em camadas com separação clara de responsabilidades:
+The solution uses a layered architecture with clear separation of concerns:
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -54,10 +54,10 @@ O projeto segue uma arquitetura em camadas com separação clara de responsabili
 └───────────────────────────────────────┘
 ```
 
-### Dependências entre módulos
+### Module dependencies
 
-| Módulo | Depende de |
-|---|---|
+| Module | Depends on |
+|--------|------------|
 | `MetaMask.Client` | Application |
 | `MetaMask.Application` | Business |
 | `MetaMask.Business` | Domain, Integration, Repository |
@@ -66,67 +66,67 @@ O projeto segue uma arquitetura em camadas com separação clara de responsabili
 | `MetaMask.Integration` | Domain |
 | `MetaMask.Repository` | Domain |
 
-> Detalhes completos em [`Dependencia.md`](./Dependencia.md) e [`Arquitetura.md`](./Arquitetura.md).
+> Full details: [`Dependencia.md`](./Dependencia.md) and [`Arquitetura.md`](./Arquitetura.md).
 
 ---
 
-## Tecnologias
+## Technologies
 
-| Tecnologia | Uso |
-|---|---|
-| .NET 6 / C# | Plataforma principal |
-| Windows Forms | Interface gráfica |
-| [Nethereum](https://nethereum.com/) | Interação com contratos BSC |
-| [Moralis](https://moralis.io/) | Dados de preço/balanço de tokens |
-| Entity Framework Core + SQLite | Persistência local |
-| Microsoft.Extensions.DependencyInjection | Injeção de dependências |
-| BSCScan API | Valor corrente dos tokens |
+| Technology | Role |
+|------------|------|
+| .NET 6 / C# | Main platform |
+| Windows Forms | Desktop UI |
+| [Nethereum](https://nethereum.com/) | BSC contract interaction |
+| [Moralis](https://moralis.io/) | Token price/balance data |
+| Entity Framework Core + SQLite | Local persistence |
+| Microsoft.Extensions.DependencyInjection | Dependency injection |
+| BSCScan API | Current token values |
 
 ---
 
-## Pré-requisitos
+## Prerequisites
 
 - [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0)
-- Windows (a interface usa `net6.0-windows` / Windows Forms)
-- Visual Studio 2022 ou superior (recomendado)
-- Biblioteca externa **`MRQ.ReturnContent`** — deve estar disponível em `..\Library\MRQ.ReturnContent\` relativa à raiz do repositório
+- Windows (the UI targets `net6.0-windows` / Windows Forms)
+- Visual Studio 2022 or later (recommended)
+- External library **`MRQ.ReturnContent`** — must be available at `..\Library\MRQ.ReturnContent\` relative to the repository root
 
 ---
 
-## Como executar
+## How to run
 
-1. Clone o repositório:
+1. Clone the repository:
 
 ```bash
-git clone <url-do-repositorio>
+git clone <repository-url>
 cd MRQ.CryptoBot
 ```
 
-2. Certifique-se de que a biblioteca `MRQ.ReturnContent` está disponível no caminho esperado (`..\Library\MRQ.ReturnContent\`).
+2. Ensure the `MRQ.ReturnContent` library is on the expected path (`..\Library\MRQ.ReturnContent\`).
 
-3. Restaure os pacotes e compile a solução:
+3. Restore packages and build the solution:
 
 ```bash
 dotnet restore MRQ.CryptoBot.sln
 dotnet build MRQ.CryptoBot.sln
 ```
 
-4. Execute o projeto cliente:
+4. Run the client project:
 
 ```bash
 dotnet run --project "0 - Client/MetaMask.Client/MRQ.CryptoBot.Client.csproj"
 ```
 
-Ou abra `MRQ.CryptoBot.sln` no Visual Studio e pressione **F5**.
+Or open `MRQ.CryptoBot.sln` in Visual Studio and press **F5**.
 
 ---
 
-## Estrutura de diretórios
+## Directory layout
 
 ```
 MRQ.CryptoBot/
 ├── 0 - Client/
-│   └── MetaMask.Client/          # Projeto WinForms (UI)
+│   └── MetaMask.Client/          # WinForms project (UI)
 ├── 1 - Core/
 │   ├── MRQ.CryptoBot.Application/
 │   ├── MRQ.CryptoBot.Business/
@@ -135,28 +135,28 @@ MRQ.CryptoBot/
 ├── 2 - Adapter/
 │   ├── MRQ.CryptoBot.Integration/ # Nethereum, Moralis, PancakeSwap
 │   └── MRQ.CryptoBot.Repository/  # EF Core + SQLite
-├── 3 - Infra/                     # Wiring de DI / IoC
+├── 3 - Infra/                     # DI / IoC wiring
 ├── 4 - Tests/
 │   └── PancakeSwapAdapterTest/
-├── Arquitetura.md                 # Esboço de API e orquestradores
-├── Dependencia.md                 # Grafo de dependências entre módulos
+├── Arquitetura.md                 # API sketch and orchestrators
+├── Dependencia.md                 # Module dependency graph
 └── MRQ.CryptoBot.sln
 ```
 
 ---
 
-## Testes
+## Tests
 
 ```bash
 dotnet test MRQ.CryptoBot.sln
 ```
 
-Os testes ficam em `4 - Tests/PancakeSwapAdapterTest/`.
+Tests live under `4 - Tests/PancakeSwapAdapterTest/`.
 
 ---
 
-## Convenções
+## Conventions
 
-- Todos os métodos devem retornar via **`ReturnContent`** (padrão definido na biblioteca externa).
-- Operações assíncronas seguem o padrão `Async` / `await`.
-- Regras de negócio residem exclusivamente na camada **Business**; adaptadores externos ficam em **Integration**.
+- Methods should return via **`ReturnContent`** (pattern from the external library).
+- Asynchronous operations follow `Async` / `await`.
+- Business rules live in **Business** only; external adapters belong in **Integration**.
